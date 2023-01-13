@@ -1,0 +1,964 @@
+[
+    {
+        "tournament_id": 1,
+        "name": "Tournoi 1",
+        "location": "1",
+        "date_start": "13/01/2023 21:53:25",
+        "date_end": "Pending",
+        "number_of_rounds": 4,
+        "current_round": 0,
+        "status": "Ongoing",
+        "rounds_list": [
+            [
+                "Bandero Enrico",
+                0.0,
+                "Kent Clark",
+                0.0
+            ],
+            [
+                "Freewoman Morgana",
+                0.0,
+                "Yamada Keisuke",
+                0.0
+            ],
+            [
+                "Barguo Briguitteu",
+                0.0,
+                "Delapampa Petunia",
+                0.0
+            ],
+            [
+                "Krosh Sarah",
+                0.0,
+                "Naznavour Charlot",
+                0.0
+            ]
+        ],
+        "registered_players": [
+            {
+                "player_id": "AS44102",
+                "last_name": "Freewoman",
+                "first_name": "Morgana",
+                "birth_date": "01/06/1937",
+                "gender": "Femme",
+                "score": 1.5,
+                "rank": "15",
+                "played_against": [
+                    "DF66547",
+                    "AS44102",
+                    "GH88785",
+                    "GH88785",
+                    "AS44102"
+                ]
+            },
+            {
+                "player_id": "GH88785",
+                "last_name": "Kent",
+                "first_name": "Clark",
+                "birth_date": "29/03/1978",
+                "gender": "Homme",
+                "score": 1.5,
+                "rank": "0",
+                "played_against": [
+                    "GH88785",
+                    "GH88785",
+                    "GH88785",
+                    "GH88785",
+                    "DF66547"
+                ]
+            },
+            {
+                "player_id": "DF66548",
+                "last_name": "Delapampa",
+                "first_name": "Petunia",
+                "birth_date": "11/11/1111",
+                "gender": "Femme",
+                "score": 2.5,
+                "rank": "1",
+                "played_against": [
+                    "GH88785",
+                    "GH88785",
+                    "DF66548",
+                    "FG87456",
+                    "DF66548"
+                ]
+            },
+            {
+                "player_id": "DF66547",
+                "last_name": "Naznavour",
+                "first_name": "Charlot",
+                "birth_date": "12/02/9999",
+                "gender": "Homme",
+                "score": 2.0,
+                "rank": "89474",
+                "played_against": [
+                    "DF66547",
+                    "DF66547",
+                    "DF66548",
+                    "GH44444",
+                    "DF66547"
+                ]
+            },
+            {
+                "player_id": "FG87456",
+                "last_name": "Yamada",
+                "first_name": "Keisuke",
+                "birth_date": "22/02/2222",
+                "gender": "Homme",
+                "score": 1.0,
+                "rank": "546",
+                "played_against": [
+                    "FG87456",
+                    "GH44444",
+                    "FG87456",
+                    "FG87456",
+                    "AS44102"
+                ]
+            },
+            {
+                "player_id": "QQ55456",
+                "last_name": "Bandero",
+                "first_name": "Enrico",
+                "birth_date": "15/05/1987",
+                "gender": "Homme",
+                "score": 2.0,
+                "rank": "235",
+                "played_against": [
+                    "ER66548",
+                    "DF66547",
+                    "GH44444",
+                    "QQ55456",
+                    "ER66548"
+                ]
+            },
+            {
+                "player_id": "ER66548",
+                "last_name": "Krosh",
+                "first_name": "Sarah",
+                "birth_date": "02/06/1986",
+                "gender": "Femme",
+                "score": 0.5,
+                "rank": "564546",
+                "played_against": [
+                    "ER66548",
+                    "AS44102",
+                    "FG87456",
+                    "QQ55456",
+                    "ER66548"
+                ]
+            },
+            {
+                "player_id": "GH44444",
+                "last_name": "Barguo",
+                "first_name": "Briguitteu",
+                "birth_date": "11/11/1111",
+                "gender": "Femme",
+                "score": 1.0,
+                "rank": "1",
+                "played_against": [
+                    "FG87456",
+                    "GH44444",
+                    "GH44444",
+                    "GH44444",
+                    "DF66548"
+                ]
+            }
+        ],
+        "description": "1"
+    },
+    {
+        "tournament_id": 2,
+        "name": "Tournoi 2",
+        "location": "1",
+        "date_start": "13/01/2023 13:38:27",
+        "date_end": "Hola",
+        "number_of_rounds": 4,
+        "current_round": 4,
+        "status": "Finished",
+        "rounds_list": [
+            [
+                "Bandero Enrico",
+                0.0,
+                "Kent Clark",
+                0.0
+            ],
+            [
+                "Freewoman Morgana",
+                0.0,
+                "Yamada Keisuke",
+                0.0
+            ],
+            [
+                "Barguo Briguitteu",
+                0.0,
+                "Delapampa Petunia",
+                0.0
+            ],
+            [
+                "Krosh Sarah",
+                0.0,
+                "Naznavour Charlot",
+                0.0
+            ]
+        ],
+        "registered_players": [
+            {
+                "player_id": "DF66548",
+                "last_name": "Delapampa",
+                "first_name": "Petunia",
+                "birth_date": "11/11/1111",
+                "gender": "Femme",
+                "score": 0.0,
+                "rank": "1",
+                "played_against": [
+                    "test1"
+                ]
+            },
+            {
+                "player_id": "FG87456",
+                "last_name": "Yamada",
+                "first_name": "Keisuke",
+                "birth_date": "22/02/2222",
+                "gender": "Homme",
+                "score": 0.0,
+                "rank": "546",
+                "played_against": [
+                    "test2"
+                ]
+            },
+            {
+                "player_id": "ER66548",
+                "last_name": "Krosh",
+                "first_name": "Sarah",
+                "birth_date": "02/06/1986",
+                "gender": "Femme",
+                "score": 0.0,
+                "rank": "564546",
+                "played_against": [
+                    "test3"
+                ]
+            },
+            {
+                "player_id": "QQ55456",
+                "last_name": "Bandero",
+                "first_name": "Enrico",
+                "birth_date": "15/05/1987",
+                "gender": "Homme",
+                "score": 0.0,
+                "rank": "235",
+                "played_against": [
+                    "test4"
+                ]
+            },
+            {
+                "player_id": "DF66547",
+                "last_name": "Naznavour",
+                "first_name": "Charlot",
+                "birth_date": "12/02/9999",
+                "gender": "Homme",
+                "score": 0.0,
+                "rank": "89474",
+                "played_against": []
+            },
+            {
+                "player_id": "GH44444",
+                "last_name": "Barguo",
+                "first_name": "Briguitteu",
+                "birth_date": "11/11/1111",
+                "gender": "Femme",
+                "score": 0.0,
+                "rank": "1",
+                "played_against": []
+            },
+            {
+                "player_id": "GH88785",
+                "last_name": "Kent",
+                "first_name": "Clark",
+                "birth_date": "29/03/1978",
+                "gender": "Homme",
+                "score": 0.0,
+                "rank": "0",
+                "played_against": []
+            },
+            {
+                "player_id": "AS44102",
+                "last_name": "Freewoman",
+                "first_name": "Morgana",
+                "birth_date": "01/06/1937",
+                "gender": "Femme",
+                "score": 0.0,
+                "rank": "15",
+                "played_against": []
+            }
+        ],
+        "description": "1"
+    },
+    {
+        "tournament_id": 3,
+        "name": "Tournoi 3",
+        "location": "1",
+        "date_start": "13/01/2023 22:15:34",
+        "date_end": "Pending",
+        "number_of_rounds": 4,
+        "current_round": 0,
+        "status": "Ongoing",
+        "rounds_list": [
+            [
+                "Bandero Enrico",
+                0.0,
+                "Kent Clark",
+                0.0
+            ],
+            [
+                "Freewoman Morgana",
+                0.0,
+                "Yamada Keisuke",
+                0.0
+            ],
+            [
+                "Barguo Briguitteu",
+                0.0,
+                "Delapampa Petunia",
+                0.0
+            ],
+            [
+                "Krosh Sarah",
+                0.0,
+                "Naznavour Charlot",
+                0.0
+            ]
+        ],
+        "registered_players": [
+            {
+                "player_id": "DF66548",
+                "last_name": "Delapampa",
+                "first_name": "Petunia",
+                "birth_date": "11/11/1111",
+                "gender": "Femme",
+                "score": 0.0,
+                "rank": "1",
+                "played_against": [
+                    "DF66548"
+                ]
+            },
+            {
+                "player_id": "FG87456",
+                "last_name": "Yamada",
+                "first_name": "Keisuke",
+                "birth_date": "22/02/2222",
+                "gender": "Homme",
+                "score": 0.0,
+                "rank": "546",
+                "played_against": [
+                    "DF66548"
+                ]
+            },
+            {
+                "player_id": "ER66548",
+                "last_name": "Krosh",
+                "first_name": "Sarah",
+                "birth_date": "02/06/1986",
+                "gender": "Femme",
+                "score": 0.0,
+                "rank": "564546",
+                "played_against": [
+                    "DF66547"
+                ]
+            },
+            {
+                "player_id": "QQ55456",
+                "last_name": "Bandero",
+                "first_name": "Enrico",
+                "birth_date": "15/05/1987",
+                "gender": "Homme",
+                "score": 0.0,
+                "rank": "235",
+                "played_against": [
+                    "QQ55456"
+                ]
+            },
+            {
+                "player_id": "DF66547",
+                "last_name": "Naznavour",
+                "first_name": "Charlot",
+                "birth_date": "12/02/9999",
+                "gender": "Homme",
+                "score": 0.0,
+                "rank": "89474",
+                "played_against": [
+                    "DF66547"
+                ]
+            },
+            {
+                "player_id": "GH44444",
+                "last_name": "Barguo",
+                "first_name": "Briguitteu",
+                "birth_date": "11/11/1111",
+                "gender": "Femme",
+                "score": 0.0,
+                "rank": "1",
+                "played_against": [
+                    "GH44444"
+                ]
+            },
+            {
+                "player_id": "GH88785",
+                "last_name": "Kent",
+                "first_name": "Clark",
+                "birth_date": "29/03/1978",
+                "gender": "Homme",
+                "score": 0.0,
+                "rank": "0",
+                "played_against": [
+                    "QQ55456"
+                ]
+            },
+            {
+                "player_id": "AS44102",
+                "last_name": "Freewoman",
+                "first_name": "Morgana",
+                "birth_date": "01/06/1937",
+                "gender": "Femme",
+                "score": 0.0,
+                "rank": "15",
+                "played_against": [
+                    "GH44444"
+                ]
+            }
+        ],
+        "description": "1"
+    },
+    {
+        "tournament_id": 4,
+        "name": "Tournoi 4",
+        "location": "1",
+        "date_start": "13/01/2023 21:49:21",
+        "date_end": "Pending",
+        "number_of_rounds": 4,
+        "current_round": 0,
+        "status": "Ongoing",
+        "rounds_list": [
+            [
+                "Bandero Enrico",
+                0.0,
+                "Kent Clark",
+                0.0
+            ],
+            [
+                "Freewoman Morgana",
+                0.0,
+                "Yamada Keisuke",
+                0.0
+            ],
+            [
+                "Barguo Briguitteu",
+                0.0,
+                "Delapampa Petunia",
+                0.0
+            ],
+            [
+                "Krosh Sarah",
+                0.0,
+                "Naznavour Charlot",
+                0.0
+            ]
+        ],
+        "registered_players": [
+            {
+                "player_id": "DF66548",
+                "last_name": "Delapampa",
+                "first_name": "Petunia",
+                "birth_date": "11/11/1111",
+                "gender": "Femme",
+                "score": 0.0,
+                "rank": "1",
+                "played_against": [
+                    "AS44102"
+                ]
+            },
+            {
+                "player_id": "FG87456",
+                "last_name": "Yamada",
+                "first_name": "Keisuke",
+                "birth_date": "22/02/2222",
+                "gender": "Homme",
+                "score": 0.0,
+                "rank": "546",
+                "played_against": [
+                    "FG87456"
+                ]
+            },
+            {
+                "player_id": "ER66548",
+                "last_name": "Krosh",
+                "first_name": "Sarah",
+                "birth_date": "02/06/1986",
+                "gender": "Femme",
+                "score": 0.0,
+                "rank": "564546",
+                "played_against": [
+                    "ER66548"
+                ]
+            },
+            {
+                "player_id": "QQ55456",
+                "last_name": "Bandero",
+                "first_name": "Enrico",
+                "birth_date": "15/05/1987",
+                "gender": "Homme",
+                "score": 0.0,
+                "rank": "235",
+                "played_against": [
+                    "FG87456"
+                ]
+            },
+            {
+                "player_id": "DF66547",
+                "last_name": "Naznavour",
+                "first_name": "Charlot",
+                "birth_date": "12/02/9999",
+                "gender": "Homme",
+                "score": 0.0,
+                "rank": "89474",
+                "played_against": [
+                    "DF66547"
+                ]
+            },
+            {
+                "player_id": "GH44444",
+                "last_name": "Barguo",
+                "first_name": "Briguitteu",
+                "birth_date": "11/11/1111",
+                "gender": "Femme",
+                "score": 0.0,
+                "rank": "1",
+                "played_against": [
+                    "ER66548"
+                ]
+            },
+            {
+                "player_id": "GH88785",
+                "last_name": "Kent",
+                "first_name": "Clark",
+                "birth_date": "29/03/1978",
+                "gender": "Homme",
+                "score": 0.0,
+                "rank": "0",
+                "played_against": [
+                    "DF66547"
+                ]
+            },
+            {
+                "player_id": "AS44102",
+                "last_name": "Freewoman",
+                "first_name": "Morgana",
+                "birth_date": "01/06/1937",
+                "gender": "Femme",
+                "score": 0.0,
+                "rank": "15",
+                "played_against": [
+                    "AS44102"
+                ]
+            }
+        ],
+        "description": "1"
+    },
+    {
+        "tournament_id": 5,
+        "name": "Tournoi 5",
+        "location": "sdfg",
+        "date_start": "13/01/2023 21:41:26",
+        "date_end": "Pending",
+        "number_of_rounds": 4,
+        "current_round": 0,
+        "status": "Ongoing",
+        "rounds_list": [
+            [
+                "Bandero Enrico",
+                0.0,
+                "Kent Clark",
+                0.0
+            ],
+            [
+                "Freewoman Morgana",
+                0.0,
+                "Yamada Keisuke",
+                0.0
+            ],
+            [
+                "Barguo Briguitteu",
+                0.0,
+                "Delapampa Petunia",
+                0.0
+            ],
+            [
+                "Krosh Sarah",
+                0.0,
+                "Naznavour Charlot",
+                0.0
+            ]
+        ],
+        "registered_players": [
+            {
+                "player_id": "GH88785",
+                "last_name": "Kent",
+                "first_name": "Clark",
+                "birth_date": "29/03/1978",
+                "gender": "Homme",
+                "score": 1.0,
+                "rank": "0",
+                "played_against": [
+                    "GH88785"
+                ]
+            },
+            {
+                "player_id": "AS44102",
+                "last_name": "Freewoman",
+                "first_name": "Morgana",
+                "birth_date": "01/06/1937",
+                "gender": "Femme",
+                "score": 2.0,
+                "rank": "15",
+                "played_against": [
+                    "ER66548"
+                ]
+            },
+            {
+                "player_id": "DF66548",
+                "last_name": "Delapampa",
+                "first_name": "Petunia",
+                "birth_date": "11/11/1111",
+                "gender": "Femme",
+                "score": 2.0,
+                "rank": "1",
+                "played_against": [
+                    "GH88785"
+                ]
+            },
+            {
+                "player_id": "GH44444",
+                "last_name": "Barguo",
+                "first_name": "Briguitteu",
+                "birth_date": "11/11/1111",
+                "gender": "Femme",
+                "score": 1.0,
+                "rank": "1",
+                "played_against": [
+                    "GH44444"
+                ]
+            },
+            {
+                "player_id": "DF66547",
+                "last_name": "Naznavour",
+                "first_name": "Charlot",
+                "birth_date": "12/02/9999",
+                "gender": "Homme",
+                "score": 0.0,
+                "rank": "89474",
+                "played_against": [
+                    "DF66547"
+                ]
+            },
+            {
+                "player_id": "FG87456",
+                "last_name": "Yamada",
+                "first_name": "Keisuke",
+                "birth_date": "22/02/2222",
+                "gender": "Homme",
+                "score": 1.0,
+                "rank": "546",
+                "played_against": [
+                    "DF66547"
+                ]
+            },
+            {
+                "player_id": "ER66548",
+                "last_name": "Krosh",
+                "first_name": "Sarah",
+                "birth_date": "02/06/1986",
+                "gender": "Femme",
+                "score": 1.0,
+                "rank": "564546",
+                "played_against": [
+                    "ER66548"
+                ]
+            },
+            {
+                "player_id": "QQ55456",
+                "last_name": "Bandero",
+                "first_name": "Enrico",
+                "birth_date": "15/05/1987",
+                "gender": "Homme",
+                "score": 0.0,
+                "rank": "235",
+                "played_against": [
+                    "GH44444"
+                ]
+            }
+        ],
+        "description": "esrgsdg dsfg ert gdsf greterytey45y54 y "
+    },
+    {
+        "tournament_id": 6,
+        "name": "Tournoi 6",
+        "location": "sdfhg",
+        "date_start": "13/01/2023 13:38:27",
+        "date_end": "Pending",
+        "number_of_rounds": 4,
+        "current_round": 0,
+        "status": "Ongoing",
+        "rounds_list": [
+            [
+                "Bandero Enrico",
+                0.0,
+                "Kent Clark",
+                0.0
+            ],
+            [
+                "Freewoman Morgana",
+                0.0,
+                "Yamada Keisuke",
+                0.0
+            ],
+            [
+                "Barguo Briguitteu",
+                0.0,
+                "Delapampa Petunia",
+                0.0
+            ],
+            [
+                "Krosh Sarah",
+                0.0,
+                "Naznavour Charlot",
+                0.0
+            ]
+        ],
+        "registered_players": [
+            {
+                "player_id": "DF66548",
+                "last_name": "Delapampa",
+                "first_name": "Petunia",
+                "birth_date": "11/11/1111",
+                "gender": "Femme",
+                "score": 0.0,
+                "rank": "1",
+                "played_against": [
+                    "DF66547",
+                    "DF66548",
+                    "DF66548",
+                    "GH44444",
+                    "QQ55456",
+                    "DF66548",
+                    "D",
+                    "F",
+                    "6",
+                    "6",
+                    "5",
+                    "4",
+                    "7",
+                    "DF66548",
+                    "DF66547",
+                    "QQ55456",
+                    "DF66548"
+                ]
+            },
+            {
+                "player_id": "FG87456",
+                "last_name": "Yamada",
+                "first_name": "Keisuke",
+                "birth_date": "22/02/2222",
+                "gender": "Homme",
+                "score": 0.0,
+                "rank": "546",
+                "played_against": [
+                    "ER66548",
+                    "DF66547",
+                    "FG87456",
+                    "QQ55456",
+                    "GH88785",
+                    "ER66548",
+                    "G",
+                    "H",
+                    "4",
+                    "4",
+                    "4",
+                    "4",
+                    "4",
+                    "FG87456",
+                    "FG87456",
+                    "GH44444",
+                    "FG87456"
+                ]
+            },
+            {
+                "player_id": "ER66548",
+                "last_name": "Krosh",
+                "first_name": "Sarah",
+                "birth_date": "02/06/1986",
+                "gender": "Femme",
+                "score": 0.0,
+                "rank": "564546",
+                "played_against": [
+                    "ER66548",
+                    "GH44444",
+                    "DF66548",
+                    "DF66547",
+                    "DF66547",
+                    "ER66548",
+                    "Q",
+                    "Q",
+                    "5",
+                    "5",
+                    "4",
+                    "5",
+                    "6",
+                    "ER66548",
+                    "ER66548",
+                    "DF66547",
+                    "FG87456"
+                ]
+            },
+            {
+                "player_id": "QQ55456",
+                "last_name": "Bandero",
+                "first_name": "Enrico",
+                "birth_date": "15/05/1987",
+                "gender": "Homme",
+                "score": 0.0,
+                "rank": "235",
+                "played_against": [
+                    "AS44102",
+                    "AS44102",
+                    "GH88785",
+                    "QQ55456",
+                    "QQ55456",
+                    "DF66548",
+                    "Q",
+                    "Q",
+                    "5",
+                    "5",
+                    "4",
+                    "5",
+                    "6",
+                    "FG87456",
+                    "FG87456",
+                    "QQ55456",
+                    "QQ55456"
+                ]
+            },
+            {
+                "player_id": "DF66547",
+                "last_name": "Naznavour",
+                "first_name": "Charlot",
+                "birth_date": "12/02/9999",
+                "gender": "Homme",
+                "score": 0.0,
+                "rank": "89474",
+                "played_against": [
+                    "DF66547",
+                    "DF66547",
+                    "GH44444",
+                    "DF66547",
+                    "DF66547",
+                    "DF66547",
+                    "D",
+                    "F",
+                    "6",
+                    "6",
+                    "5",
+                    "4",
+                    "7",
+                    "ER66548",
+                    "DF66547",
+                    "DF66547",
+                    "DF66548"
+                ]
+            },
+            {
+                "player_id": "GH44444",
+                "last_name": "Barguo",
+                "first_name": "Briguitteu",
+                "birth_date": "11/11/1111",
+                "gender": "Femme",
+                "score": 0.0,
+                "rank": "1",
+                "played_against": [
+                    "GH88785",
+                    "GH44444",
+                    "GH44444",
+                    "GH44444",
+                    "AS44102",
+                    "AS44102",
+                    "G",
+                    "H",
+                    "4",
+                    "4",
+                    "4",
+                    "4",
+                    "4",
+                    "GH44444",
+                    "GH88785",
+                    "GH44444",
+                    "QQ55456"
+                ]
+            },
+            {
+                "player_id": "GH88785",
+                "last_name": "Kent",
+                "first_name": "Clark",
+                "birth_date": "29/03/1978",
+                "gender": "Homme",
+                "score": 0.0,
+                "rank": "0",
+                "played_against": [
+                    "GH88785",
+                    "DF66548",
+                    "GH88785",
+                    "GH88785",
+                    "GH88785",
+                    "DF66547",
+                    "A",
+                    "S",
+                    "4",
+                    "4",
+                    "1",
+                    "0",
+                    "2",
+                    "DF66548",
+                    "GH88785",
+                    "AS44102",
+                    "AS44102"
+                ]
+            },
+            {
+                "player_id": "AS44102",
+                "last_name": "Freewoman",
+                "first_name": "Morgana",
+                "birth_date": "01/06/1937",
+                "gender": "Femme",
+                "score": 0.0,
+                "rank": "15",
+                "played_against": [
+                    "AS44102",
+                    "AS44102",
+                    "FG87456",
+                    "GH88785",
+                    "AS44102",
+                    "AS44102",
+                    "A",
+                    "S",
+                    "4",
+                    "4",
+                    "1",
+                    "0",
+                    "2",
+                    "GH44444",
+                    "ER66548",
+                    "AS44102",
+                    "AS44102"
+                ]
+            }
+        ],
+        "description": "dfgklsj klsdlki slksdl"
+    }
+]
