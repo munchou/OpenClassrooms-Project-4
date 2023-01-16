@@ -1,4 +1,6 @@
 import os
+from os import path
+import sys
 import json
 import re
 
@@ -13,10 +15,14 @@ class MenuView:
     def __init__(self):
         pass
 
+    @staticmethod
+    def clear_screen():
+        os.system("cls" if sys.platform == "win32" else "clear")
+
     def main_menu(self):
         """Shows the main menu with some data info."""
         num_of_players = self.number_of_player()
-        os.system("cls")
+        self.clear_screen()
         print("MAIN MENU")
         print("1. Créer un nouveau tournoi")
         print("2. Reprendre un tournoi")
@@ -41,12 +47,15 @@ class MenuView:
         print(f"Il y a {num_of_players} joueurs dans la base de données.")
 
     def number_of_player(self):
-        obj = json.load(open(players_data_file))
-        num_of_players = len(obj)
-        return num_of_players
+        if path.isfile(players_data_file) is False:
+            return 0
+        else:
+            obj = json.load(open(players_data_file))
+            num_of_players = len(obj)
+            return num_of_players
 
     def not_enough_players(self):
-        os.system("cls")
+        self.clear_screen()
         num_of_players = self.number_of_player()
         if num_of_players < MAX_PLAYERS:
             print(
@@ -156,7 +165,7 @@ class MenuView:
 
     @staticmethod
     def input_player_wrongid():
-        os.system("cls")
+        # MenuView().clear_screen()
         print("\nErreur de saisie ou ID inexistant.")
 
     @staticmethod

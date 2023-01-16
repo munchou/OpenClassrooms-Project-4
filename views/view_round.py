@@ -17,8 +17,9 @@ class RoundView:
             "P2 - SCORE",
         ]
 
-    def matches_summary(self, tourn, matches):
+    def matches_summary(self, tourn, round, matches):
         """Show the tables of the tournament and the current round."""
+        # print(f"TEEEEEEEEEEST : {tourn.matches}")
         # TOURNAMENT table
         tableheader = PrettyTable(["NOM DU TOURNOI", tourn.name])
 
@@ -29,8 +30,8 @@ class RoundView:
         tableheader.align[tourn.name] = "l"
 
         tableheader.add_row(["LIEU", tourn.location])
-        tableheader.add_row(["DÉMARRÉ LE", tourn.date_start])
-        tableheader.add_row(["TERMINÉ LE", tourn.date_end])
+        tableheader.add_row(["DÉMARRÉ LE", round.date_start])
+        tableheader.add_row(["TERMINÉ LE", round.date_end])
         tableheader.add_row(["DESCRIPTION", tourn.description])
 
         tableheader.add_row(

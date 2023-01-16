@@ -1,9 +1,7 @@
-import os
 from os import path
 import json
 
 from models.models import Tournament
-from models.models import Round
 
 from controllers.controller_player_input import PlayerInput
 from controllers.controller_tournament import TournamentController
@@ -51,6 +49,7 @@ class MenuController:
             pass
 
         elif user_choice == "7":
+            # self.players_test()
             pass
 
         elif user_choice == "8":
@@ -75,8 +74,8 @@ class MenuController:
         with open(tournaments_data_file) as file:
             try:
                 obj = json.load(file)
-                for u in range(len(obj)):
-                    existing_id = obj[u]["tournament_id"]
+                for tournament in obj:
+                    existing_id = tournament["tournament_id"]
                     id_list.append(existing_id)
                     if not id_list:
                         id_list = [0]
@@ -110,7 +109,7 @@ class MenuController:
             date_start="Pending",
             date_end="Pending",
             number_of_rounds=4,
-            current_round=0,
+            current_round=1,
             status="Ongoing",
             rounds_list=[],
             registered_players=tournament_players,
@@ -118,8 +117,6 @@ class MenuController:
         )
 
         tournament.save_tournament()
-
-        # self.tournamentcontroller.round_one_info(tournament)
 
         choice = self.tournament_view.tournament_start_prompt()
 
@@ -138,16 +135,13 @@ class MenuController:
         players_list = []
         num_of_players = len(obj)
         self.menu_view.num_of_players(num_of_players)
-        index = 0
         for players in obj:
-            index += 1
             players_list.append(players)
         return players_list
 
     def select_players(self):
         """Select and save players available in the data file for the new tournament."""
         player_final_list = []
-        chosen_player = []
         players_available_choices = self.show_all_players()
 
         check_players_avail = self.menu_view.not_enough_players()
@@ -156,28 +150,32 @@ class MenuController:
             continue
 
         while True:
-            index = 0
-            for players in players_available_choices:
-                index += 1
-                self.tournament_view.players_available(index, players)
+            ids_list = []
+            for player in players_available_choices:
+                ids_list.append(player["p_id"])
+                self.tournament_view.players_available(player)
 
             choice = self.tournament_view.player_add_choice()
-            if choice not in range(1, len(players_available_choices) + 1):
+
+            if choice not in ids_list:
                 self.tournament_view.input_not_in_list()
                 continue
 
-            chosen_player = players_available_choices[choice - 1]
-            self.tournament_view.registered_players_number(player_final_list)
+            for player in players_available_choices:
+                if choice == player["p_id"]:
+                    selected_player = player
+                    player_final_list.append(selected_player)
+                    players_available_choices.remove(selected_player)
 
-            player_final_list.append(chosen_player)
-            players_available_choices.remove(chosen_player)
+            self.tournament_view.registered_players_number(player_final_list)
 
             if len(player_final_list) < 8:
                 continue
             break
 
-        os.system("cls")
+        self.menu_view.clear_screen()
         self.tournament_view.registered_players()
         for players in player_final_list:
             print(players)
+        round.test(player_final_list)
         return player_final_list

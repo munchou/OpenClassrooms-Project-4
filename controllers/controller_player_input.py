@@ -20,12 +20,16 @@ class PlayerInput:
 
     def id_exist(self):
         """Check if a player ID exists."""
-        obj = json.load(open(players_data_file))
-        id_list = []
-        for u in range(len(obj)):
-            existing_id = obj[u]["player_id"]
-            id_list.append(existing_id)
-        return id_list
+        if path.isfile(players_data_file) is False:
+            id_list = []
+            return id_list
+        else:
+            obj = json.load(open(players_data_file))
+            id_list = []
+            for u in obj:
+                existing_id = u["player_id"]
+                id_list.append(existing_id)
+            return id_list
 
     def players_id(self):
         """Input for new player's ID."""
@@ -110,23 +114,42 @@ class PlayerInput:
             else:
                 self.menu_view.input_player_invalidchara()
 
-    # def player_summary(self):
-    #     """Show the summary of the new player's info
-    #     before confirming or cancelling it."""
-    #     print(
-    #         "\nRécapitulatif :\n"
-    #         f"Identifiant : {self.player_id}, "
-    #         f"Nom : {self.last_name}, "
-    #         f"Prénom : {self.first_name}, "
-    #         f"Date de naissance : {self.birth_date}, "
-    #         f"Sexe : {self.gender}, "
-    #         f"Classement (?) : {self.rank}"
-    #     )
+    def player_id_exist(self):
+        """Check if a player ID exists."""
+        id_list = []
+        if path.isfile(players_data_file) is False:
+            with open(players_data_file, "w") as json_file:
+                json.dump(
+                    id_list,
+                    json_file,
+                    indent=4,
+                )
+                self.menu_view.json_file_created()
+
+        with open(players_data_file) as file:
+            try:
+                obj = json.load(file)
+                for u in obj:
+                    existing_id = u["p_id"]
+                    id_list.append(existing_id)
+                    if not id_list:
+                        id_list = [0]
+                return id_list
+            except Exception:
+                pass
 
     def players_add(self):
         """Create a player, serialize it, add it to the json file."""
         running = True
         while running:
+            p_id = 1
+
+            id_list = self.player_id_exist()
+            for p_id in id_list:
+                if p_id in id_list:
+                    p_id += 1
+
+            p_id = p_id
             id_input = self.players_id()
             lastname_input = self.player_last_name()
             firstname_input = self.player_first_name()
@@ -153,12 +176,13 @@ class PlayerInput:
                     continue
 
             if check_info == "n":
-                os.system("cls")
+                self.menu_view.clear_screen()
                 self.menu_view.cancelled()
                 continue
 
             else:
                 player = Player(
+                    p_id,
                     id_input,
                     lastname_input,
                     firstname_input,
@@ -177,7 +201,7 @@ class PlayerInput:
                         break
                     elif add_more_player == "n":
                         running = False
-                        os.system("cls")
+                        self.menu_view.clear_screen()
                         from controllers.controller import MenuController
 
                         MenuController().main_menu()
@@ -189,14 +213,14 @@ class PlayerInput:
         """Show the list of IDs in the alphabetical order.
         Remove a player by typing their ID."""
         while True:
-            os.system("cls")
+            self.menu_view.clear_screen()
             obj = json.load(open(players_data_file))
 
-            # Show the available IDs that can be removed - To remove later
+            # Show the available IDs that can be removed - To remove later?
             print("ID disponibles (par ordre alphabétique) : ")
             id_list = []
-            for u in range(len(obj)):
-                a = f"{obj[u]['player_id']} - {obj[u]['first_name']} {obj[u]['last_name']}"
+            for player in obj:
+                a = f"{player['player_id']} - {player['first_name']} {player['last_name']}"
                 id_list.append(a)
             for ordered_ids in sorted(id_list):
                 print(ordered_ids)
@@ -207,7 +231,6 @@ class PlayerInput:
                 wrong_id = False
                 if obj[u]["player_id"] == id_to_pop:
                     obj.pop(u)
-                    # print(obj)
                     with open(players_data_file, "w") as json_file:
                         json.dump(
                             obj,
@@ -238,36 +261,36 @@ class PlayerInput:
         """Show the list of IDs in the alphabetical order.
         Choose the ID of the player to be changed"""
         while True:
-            os.system("cls")
+            self.menu_view.clear_screen()
             obj = json.load(open(players_data_file))
 
             # Show the available IDs that can be updated - To remove later
 
             print("ID disponibles (par ordre alphabétique) : ")
             id_list = []
-            for u in range(len(obj)):
-                a = f"{obj[u]['player_id']} - {obj[u]['first_name']} {obj[u]['last_name']}"
+            for player in obj:
+                a = f"{player['player_id']} - {player['first_name']} {player['last_name']}"
                 id_list.append(a)
             for ordered_ids in sorted(id_list):
                 print(ordered_ids)
 
             id_to_update = self.menu_view.input_player_update()
 
-            for u in range(len(obj)):
+            for player in obj:
                 wrong_id = False
-                if obj[u]["player_id"] == id_to_update:
+                if player["player_id"] == id_to_update:
                     last_name = None
                     # first_name = None
                     # birth_date = None
                     # gender = None
                     # rank = None
-                    obj[u]["last_name"] = self.menu_view.input_player_lastname(
+                    player["last_name"] = self.menu_view.input_player_lastname(
                         last_name
                     )
-                    obj[u]["first_name"] = PlayerInput.player_first_name(self)
-                    obj[u]["birth_date"] = PlayerInput.player_birth_date(self)
-                    obj[u]["gender"] = PlayerInput.player_gender(self)
-                    obj[u]["rank"] = PlayerInput.player_rank(self)
+                    player["first_name"] = PlayerInput.player_first_name(self)
+                    player["birth_date"] = PlayerInput.player_birth_date(self)
+                    player["gender"] = PlayerInput.player_gender(self)
+                    player["rank"] = PlayerInput.player_rank(self)
 
                     with open(players_data_file, "w") as json_file:
                         json.dump(

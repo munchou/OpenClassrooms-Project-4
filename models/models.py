@@ -13,7 +13,10 @@ tournaments_data_file = "data/tournaments.json"
 
 
 class Player:
-    def __init__(self, player_id, last_name, first_name, birth_date, gender, rank):
+    def __init__(
+        self, p_id, player_id, last_name, first_name, birth_date, gender, rank
+    ):
+        self.p_id = p_id
         self.player_id = player_id
         self.last_name = last_name
         self.first_name = first_name
@@ -28,6 +31,7 @@ class Player:
     def player_serialization(self):
         """Serialize the player."""
         return {
+            "p_id": self.p_id,
             "player_id": self.player_id,
             "last_name": self.last_name,
             "first_name": self.first_name,
@@ -81,7 +85,6 @@ class Tournament:
         rounds_list,
         registered_players,
         description,
-        # number_of_rounds=4,
     ):
         self.tournament_id = tournament_id
         self.name = name
@@ -95,9 +98,8 @@ class Tournament:
         self.rounds_list = rounds_list
         self.registered_players = registered_players
         self.description = description
-        # self.number_of_rounds = number_of_rounds
 
-        # self.tour_db = tournaments_data_file
+        self.matchlist = []
 
         self.tournament_view = TournamentView()
         self.menu_view = MenuView()
@@ -153,9 +155,9 @@ class Tournament:
         file_name, string_compared, compared_var, string_to_update, added_variable
     ):
         obj = json.load(open(file_name))
-        for u in range(len(obj)):
-            if obj[u][string_compared] == compared_var:
-                obj[u][string_to_update] = added_variable
+        for u in obj:
+            if u[string_compared] == compared_var:
+                u[string_to_update] = added_variable
 
                 with open(file_name, "w") as json_file:
                     json.dump(obj, json_file, indent=4)
@@ -172,13 +174,14 @@ class Tournament:
     #         match_players_list.append(player_info)
     #     return match_players_list
 
+    def tournament_players(self):
+        players = self.registered_players
+        return players
+
     def players_shuffle(self):
         """Shuffle the registered players randomly for the first round."""
-        players = self.registered_players  # self.players_name_and_score()
-        # print(f"Original players list : {players}")
+        players = self.registered_players
         random.shuffle(players)
-        # for players in registered_players:
-        # print(f"Shuffled players list : {players}")
         return players
 
     def roundone_players(self):
@@ -189,10 +192,20 @@ class Tournament:
         while len(playerslist) >= 2:
             player1 = playerslist[0]
             player2 = playerslist[1]
-            Round.pair_generator(self, player1, player2)
-            # del playerslist[:2]
+            self.pair_generator(player1, player2)
             playerslist = playerslist[2:]
-        return playerslist
+
+    def pair_generator(self, player1, player2):
+        """Match as a tuple of 2 lists of the current players and their score."""
+        match = (
+            f"{player1['last_name']} {player1['first_name']}",
+            player1["score"],
+            f"{player2['last_name']} {player2['first_name']}",
+            player2["score"],
+        )
+        # self.rounds_list.append(match)
+        self.played_against(player1, player2)
+        self.matchlist.append(match)
 
     def sort_by_score(self):
         """Sort the players according to their score.
@@ -200,30 +213,64 @@ class Tournament:
         self.registered_players = sorted(
             self.registered_players, key=lambda score: -score["score"]
         )
+        return self.registered_players
+
+    def next_round_same_score(self, p1, p2):
+        same_score = []
+        if p1["score"] == p2["score"]:
+            same_score.append
+
+    def nextround_players(self):
+        playerslist = self.registered_players
+        playerslist = sorted(playerslist, key=lambda score: -score["score"])
+
+        obj = json.load(open(tournaments_data_file))
+
+        players_removed = []
+
+        # self.next_round_same_score(self, player1, player2)
+
+        while len(playerslist) >= 2:
+            playerslist = sorted(playerslist, key=lambda score: -score["score"])
+
+            player1 = playerslist[0]
+            player2 = playerslist[1]
+
+            # Check
+            for removedplayer in players_removed:
+                print(f"Removed players : {removedplayer['first_name']}")
+
+            for tournament in obj:
+                if tournament["tournament_id"] == self.tournament_id:
+                    if player2["player_id"] in player1["played_against"]:
+                        players_removed.append(playerslist[1])
+                        del playerslist[1]
+
+                        continue
+                    else:
+                        self.pair_generator(player1, player2)
+                        playerslist = playerslist[2:]
+                        if players_removed:
+                            for player in players_removed:
+                                playerslist.append(player)
+                                players_removed = []
 
     def played_against(self, p1, p2):
         obj = json.load(open(tournaments_data_file))
+        for tournament in obj:
+            roundplayers = self.registered_players
 
-        for fields in range(len(obj)):
-            roundplayers = obj[fields]["registered_players"]
-
-            if obj[fields]["tournament_id"] == self.tournament_id:
-                for player in range(len(roundplayers)):
-                    if (
-                        self.tournament_id
-                        and roundplayers[player]["player_id"] == p1["player_id"]
-                    ):
-                        p1list = roundplayers[player]["played_against"]
+            if tournament["tournament_id"] == self.tournament_id:
+                for player in roundplayers:
+                    if self.tournament_id and player["player_id"] == p1["player_id"]:
+                        p1list = player["played_against"]
                         p1list.append(p2["player_id"])
-                        roundplayers[player]["played_against"] = p1list
+                        player["played_against"] = p1list
 
-                    if (
-                        self.tournament_id
-                        and roundplayers[player]["player_id"] == p2["player_id"]
-                    ):
-                        p2list = roundplayers[player]["played_against"]
-                        p2list.append(p2["player_id"])
-                        roundplayers[player]["played_against"] = p2list
+                    if self.tournament_id and player["player_id"] == p2["player_id"]:
+                        p2list = player["played_against"]
+                        p2list.append(p1["player_id"])
+                        player["played_against"] = p2list
 
                 with open(tournaments_data_file, "w") as json_file:
                     json.dump(
@@ -231,9 +278,6 @@ class Tournament:
                         json_file,
                         indent=4,
                     )
-
-        # Optional, to see who played against whom:
-        # print(f"{p1['last_name']} played against {p2['last_name']}")
 
 
 class Round:
@@ -247,13 +291,5 @@ class Round:
         """Get round's info as a list."""
         return [self.round_name, self.date_start, self.date_end, self.matches]
 
-    def pair_generator(self, player1, player2):
-        """Match as a tuple of 2 lists of the current players and their score."""
-        match = (
-            f"{player1['last_name']} {player1['first_name']}",
-            player1["score"],
-            f"{player2['last_name']} {player2['first_name']}",
-            player2["score"],
-        )
-        self.matches.append(match)
-        self.played_against(player1, player2)
+    def retrieve_matches(self, match):
+        self.matches = match
