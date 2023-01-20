@@ -8,6 +8,7 @@ allowed_characters = r"^[a-zA-ZéÉèÈêÊëËâÂàÀîÎïÏçÇôÔûÛüÜ 
 digits_characters = r"^[0-9]*$"
 gender_characters = r"^[hHfF]*$"
 players_data_file = "data/players.json"
+tournaments_data_file = "data/tournaments.json"
 MAX_PLAYERS = 8
 
 
@@ -19,11 +20,17 @@ class MenuView:
     def clear_screen():
         os.system("cls" if sys.platform == "win32" else "clear")
 
-    def main_menu(self):
+    def main_header(self):
+        self.clear_screen()
+        print("\t**********************")
+        print("\t*   CENTRE ÉCHECS    *")
+        print("\t*  Là où on réussit  *")
+        print("\t**********************\n")
+
+    def menu(self):
         """Shows the main menu with some data info."""
         num_of_players = self.number_of_player()
-        self.clear_screen()
-        print("MAIN MENU")
+        print("\nMENU PRINCIPAL")
         print("1. Créer un nouveau tournoi")
         print("2. Reprendre un tournoi")
         print(f"3. Ajouter un nouveau joueur ({num_of_players} joueurs disponibles)")
@@ -31,17 +38,29 @@ class MenuView:
         print("5. Supprimer un joueur")
         print("6. Voir les rapports")
         print("7. Voir la liste de tous les joueurs de la base de données")
-        print("8. Quitter le programme")
+        print("\n10. Quitter le programme")
+
+    def back_to_menu(self):
+        choice = input(
+            "\n\tVoulez-vous retourner au menu principal ? (O/N = quitter) "
+        ).casefold()
+        if choice == "o":
+            return "ok"
+        elif choice != "n":
+            self.wrong_input()
+            return None
+        else:
+            return "bye"
 
     def input_exit_program(self):
         choice = input("Quitter le programme ? (O/N) ").casefold()
         if choice == "o":
-            exit()
+            return "ok"
         elif choice != "n":
             print("O ou N")
-            self.input_exit_program()
+            return None
         else:
-            self.main_menu()
+            return "bye"
 
     def num_of_players(self, num_of_players):
         print(f"Il y a {num_of_players} joueurs dans la base de données.")
@@ -53,6 +72,14 @@ class MenuView:
             obj = json.load(open(players_data_file))
             num_of_players = len(obj)
             return num_of_players
+
+    def number_of_tournaments(self):
+        if path.isfile(tournaments_data_file) is False:
+            return 0
+        else:
+            tournaments = json.load(open(tournaments_data_file))
+            num_of_tournaments = len(tournaments)
+            return num_of_tournaments
 
     def not_enough_players(self):
         self.clear_screen()
@@ -70,6 +97,10 @@ class MenuView:
     def first_prompt():
         """Tell the user to choice an option and confirm it"""
         print("\nFaites votre choix et pressez la touche [ENTREE] : ")
+
+    @staticmethod
+    def new_player_header():
+        print("\no o o | AJOUT D'UN NOUVEAU JOUEUR | o o o")
 
     def input_playerid(self):
         return input("\nIdentifiant du joueur (AB12345): ").upper()
@@ -165,7 +196,6 @@ class MenuView:
 
     @staticmethod
     def input_player_wrongid():
-        # MenuView().clear_screen()
         print("\nErreur de saisie ou ID inexistant.")
 
     @staticmethod
@@ -178,3 +208,37 @@ class MenuView:
     @staticmethod
     def cancelled():
         print("\nOpération annulée.\n")
+
+    def reports_menu(self):
+        """Shows the reports menu with some data info."""
+        num_of_players = self.number_of_player()
+        num_of_tournaments = self.number_of_tournaments()
+        self.clear_screen()
+        print("o o o | AFFICHER DES RAPPORTS | o o o\n")
+        print(f"1. Afficher les {num_of_players} joueurs enregistrés")
+        print(f"2. Afficher les {num_of_tournaments} tournois")
+        print("3. Afficher les joueurs d'un tournoi")
+        print("4. Afficher les rounds et matchs d'un tournoi")
+        print("\n0. Retourner au menu principal")
+        print("\n10. Quitter le programme")
+
+    def reports_showmore(self):
+        choice = input("\n\tVoulez-vous afficher un autre rapport ? (O/N) ").casefold()
+        if choice == "o":
+            return "ok"
+        elif choice != "n":
+            self.wrong_input()
+            return None
+        else:
+            return "bye"
+
+    def tournament_select(self):
+        return input("Choisissez un tournoi : ").casefold()
+
+    @staticmethod
+    def tournaments_file_error():
+        print("ERREUR : Le fichier des tournois n'existe pas.")
+
+    @staticmethod
+    def tournament_not_started():
+        print("\nRien à afficher, le premier round n'a pas été terminé.\n")

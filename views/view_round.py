@@ -19,7 +19,6 @@ class RoundView:
 
     def matches_summary(self, tourn, round, matches):
         """Show the tables of the tournament and the current round."""
-        # print(f"TEEEEEEEEEEST : {tourn.matches}")
         # TOURNAMENT table
         tableheader = PrettyTable(["NOM DU TOURNOI", tourn.name])
 
@@ -42,6 +41,7 @@ class RoundView:
         print(tableheader)
 
         # ROUND table
+        self.table.clear()
         self.table.field_names = self.round_players
         self.table._min_width = {
             "Match": 8,
@@ -59,7 +59,6 @@ class RoundView:
             "Player 2 - NAME": 25,
             "P2 - SCORE": 12,
         }
-        # print(f"Les matches du round : {matches}")
 
         for i in range(len(matches)):
             row = list(matches[i])
@@ -69,10 +68,3 @@ class RoundView:
             self.table.add_row(row)
 
         print(self.table)
-
-    def input_exit_program(self):
-        pass
-
-    @staticmethod
-    def first_prompt():
-        pass

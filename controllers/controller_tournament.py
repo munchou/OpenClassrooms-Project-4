@@ -1,5 +1,5 @@
-import json
-import time
+import os
+import sys
 from datetime import datetime
 
 from views.view_tournament import TournamentView
@@ -22,8 +22,12 @@ class TournamentController:
 
         self.timer_fr = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 
+    def clear_screen(self):
+        os.system("cls" if sys.platform == "win32" else "clear")
+
     def tournament_start(self, tourn):
         """Start a new tournament ("tourn") or resume an existing one."""
+        self.clear_screen()
         selected_tournament = tourn.tournament_id
 
         # in case of new tournament (from round 1):
@@ -41,7 +45,7 @@ class TournamentController:
 
             self.round_one_start(tourn)
 
-            tourn.current_round += 1
+            # tourn.current_round += 1
 
             self.tournament.tournament_update(
                 tournaments_data_file,
@@ -54,7 +58,7 @@ class TournamentController:
         elif tourn.current_round > 1:
             self.round_next(tourn)
 
-            tourn.current_round += 1
+            # tourn.current_round += 1
 
             self.tournament.tournament_update(
                 tournaments_data_file,
@@ -83,11 +87,17 @@ class TournamentController:
                 tournaments_data_file,
                 "tournament_id",
                 selected_tournament,
+                "registered_players",
+                tourn.registered_players_ordered,
+            )
+
+            self.tournament.tournament_update(
+                tournaments_data_file,
+                "tournament_id",
+                selected_tournament,
                 "rounds_list",
                 round_one.matches,
             )
-
-            # round_one.matches = tourn.rounds_list  # Check model to understand why
 
         else:
             round_one.matches = tourn.rounds_list
@@ -96,27 +106,31 @@ class TournamentController:
 
         self.round_view.matches_summary(tourn, round_one, round_one.matches)
 
-        choice = self.tournament_view.end_round_prompt()
-
-        while choice:
+        while True:
+            choice = self.tournament_view.end_round_prompt()
             if choice == "ok":
+                round_one.date_end = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+
+                self.score_points_input(round_one.matches, tourn)
+
+                round_one.retrieve_matches(tourn.matchlist)
+
+                tourn.rounds_list = []
+                tourn.rounds_list.append(round_one.round())
+                self.tournament.tournament_update(
+                    tournaments_data_file,
+                    "tournament_id",
+                    selected_tournament,
+                    "rounds_list",
+                    tourn.rounds_list,
+                )
+                tourn.current_round += 1
+
                 break
             elif choice == "bye":
-                quit()
-
-        round_one.date_end = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-
-        self.score_points_input(round_one.matches, tourn)
-
-        tourn.rounds_list = []
-        tourn.rounds_list.append(round_one.round())
-        self.tournament.tournament_update(
-            tournaments_data_file,
-            "tournament_id",
-            selected_tournament,
-            "rounds_list",
-            tourn.rounds_list,
-        )
+                break
+            else:
+                continue
 
     def round_next(self, tourn):
         """Rounds 2 to 4, the players are ordered according to their
@@ -125,8 +139,28 @@ class TournamentController:
         round = Round(f"Round {str(tourn.current_round)}", self.timer_fr, " ")
 
         if f"Round {str(tourn.current_round)}" not in str(tourn.rounds_list):
+            players_backup = tourn.registered_players
+
             tourn.nextround_players()  # Makes the teams for the round
+
             round.retrieve_matches(tourn.matchlist)
+
+            while len(round.matches) != 4:
+                tourn.registered_players = players_backup
+                tourn.nextround_players()
+                continue
+
+            round.retrieve_matches(tourn.matchlist)
+
+            tourn.registered_players = tourn.registered_players_ordered
+
+            self.tournament.tournament_update(
+                tournaments_data_file,
+                "tournament_id",
+                selected_tournament,
+                "registered_players",
+                tourn.registered_players,
+            )
 
             self.tournament.tournament_update(
                 tournaments_data_file,
@@ -152,46 +186,46 @@ class TournamentController:
 
         self.round_view.matches_summary(tourn, round, round.matches)
 
-        choice = self.tournament_view.end_round_prompt()
-
-        while choice:
+        while True:
+            choice = self.tournament_view.end_round_prompt()
             if choice == "ok":
+                round.date_end = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+
+                self.score_points_input(round.matches, tourn)
+
+                del tourn.rounds_list[-1]
+                tourn.rounds_list.append(round.round())
+                self.tournament.tournament_update(
+                    tournaments_data_file,
+                    "tournament_id",
+                    selected_tournament,
+                    "rounds_list",
+                    tourn.rounds_list,
+                )
+                tourn.current_round += 1
+
+                if tourn.current_round == 5:
+                    tourn.status = "Finished"
+                    self.tournament.tournament_update(
+                        tournaments_data_file,
+                        "tournament_id",
+                        selected_tournament,
+                        "status",
+                        tourn.status,
+                    )
+
                 break
             elif choice == "bye":
-                quit()
-
-        round.date_end = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-
-        self.score_points_input(round.matches, tourn)
-
-        del tourn.rounds_list[-1]
-        tourn.rounds_list.append(round.round())
-        self.tournament.tournament_update(
-            tournaments_data_file,
-            "tournament_id",
-            selected_tournament,
-            "rounds_list",
-            tourn.rounds_list,
-        )
-
-        if tourn.current_round == 4:
-            tourn.status = "Finished"
-            self.tournament.tournament_update(
-                tournaments_data_file,
-                "tournament_id",
-                selected_tournament,
-                "status",
-                tourn.status,
-            )
-
-    def round_end(self, tourn):
-        pass
-        # input the score
+                break
+            else:
+                continue
 
     def score_points_input(self, matches, tourn):
-        print(f"TOURN MATCHES : {tourn.matches}")
+        selected_tournament = tourn.tournament_id
+
         players_scores_list = []
-        print(f"ROUNDS : {matches}")
+        # print(f"ROUNDS (debug - to delete later): {matches}")
+
         i = 0
         for match in matches:
             p1 = match[0]
@@ -219,12 +253,34 @@ class TournamentController:
                         p2_score += 0.5
                         players_scores_list.extend([0.5, 0.5])
                         break
+
                 else:
                     self.tournament_view.wrong_input()
                     continue
 
         for i in range(len(tourn.registered_players)):
             tourn.registered_players[i]["score"] += players_scores_list[i]
+
+        # UPDATE the tournament's "rounds_list" as well
+
+        new_matches = []
+        new_matchesbis = []
+        for match in matches:
+            new_match = list(match)
+            new_matches.append(new_match)
+
+        players_scores_list_bis = players_scores_list
+
+        for match in new_matches:
+            match[1] += players_scores_list_bis[0]
+            match[3] += players_scores_list_bis[1]
+            players_scores_list_bis = players_scores_list_bis[2:]
+            matchtuple = tuple(match)
+            new_matchesbis.append(matchtuple)
+
+        tourn.updated_matchlist(new_matchesbis)
+
+        # tourn.matchlist = new_matchesbis
 
         selected_tournament = tourn.tournament_id
 
@@ -236,16 +292,6 @@ class TournamentController:
             tourn.registered_players,
         )
 
-        # tourn.current_round += 1
-
-        # self.tournament.tournament_update(
-        #     tournaments_data_file,
-        #     "tournament_id",
-        #     selected_tournament,
-        #     "current_round",
-        #     tourn.current_round,
-        # )
-
     def registered_players_update(self, selected_tournament, players):
         self.tournament.tournament_update(
             tournaments_data_file,
@@ -255,53 +301,5 @@ class TournamentController:
             players,
         )
 
-    def tournament_resume(self):
-        tournaments = self.tournament.load_tournament(self)
-
-        self.tournament_view.tournament_resume()
-
-        while True:
-            tourn_choice = self.tournament_view.tournament_resume_input()
-            try:
-                tourn_choice = int(tourn_choice)
-                break
-            except ValueError:
-                self.tournament_view.wrong_input()
-                time.sleep(1)
-                self.tournament_resume()
-
-        available_ids = []
-        for tournament in tournaments:
-            if tournament["status"] == "Ongoing":
-                available_ids.append(tournament["tournament_id"])
-
-        for tourn in tournaments:
-            if tourn_choice in available_ids:
-                tourn = tourn_choice - 1
-                tournament = tournaments[tourn]
-                tournament = Tournament(**tournament)
-                # tournament = Tournament(
-                #     tournament["tournament_id"],
-                #     tournament["name"],
-                #     tournament["location"],
-                #     tournament["date_start"],
-                #     tournament["date_end"],
-                #     tournament["number_of_rounds"],
-                #     tournament["current_round"],
-                #     tournament["status"],
-                #     tournament["rounds_list"],
-                #     tournament["registered_players"],
-                #     tournament["description"],
-                # )
-                self.tournament_start(tournament)
-                break
-
-            else:
-                self.tournament_view.wrong_input()
-                time.sleep(1)
-                self.tournament_resume()
-
     def tournament_end(self, tourn):
         tourn.date_end = self.timer_fr
-        print("Sorry, the Princess is in another castle...")
-        print("GAME OVER")

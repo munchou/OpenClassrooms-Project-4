@@ -24,14 +24,14 @@ class TournamentView:
 
     @staticmethod
     def tournament_new_header():
-        print("\nCREATION D'UN TOURNOI")
+        print("\no o o | CREATION D'UN TOURNOI | o o o")
 
     def tournament_new_input(self):
+        print("")
         user_input = ["Nom du tournoi : ", "Lieu : ", "Description : "]
         return user_input
 
     def players_available(self, player):
-        # return print(f"Joueur {index} : {players}")
         return print(
             f'Joueur {player["p_id"]} : {player["player_id"]} | {player["last_name"]} {player["first_name"]} | {player["birth_date"]} | Classement : {player["rank"]}'
         )
@@ -57,15 +57,24 @@ class TournamentView:
         )
 
     @staticmethod
-    def registered_players():
-        print("\nJoueurs enregistrés pour le tournois :")
+    def players_add_header():
+        print("\no o o | Ajout de joueurs pour le nouveau tournoi | o o o\n")
+
+    @staticmethod
+    def registered_players_header():
+        print("\no o o | Joueurs enregistrés pour le tournois | o o o\n")
+
+    @staticmethod
+    def registered_players_titles():
+        print("\nNom Prénom | Sexe | Date de naissance | Classement")
+        print("--------------------------------------------------")
 
     @staticmethod
     def tournament_saved():
         print("\nLe tournoi a bien été enregistré.")
 
     def tournament_start_prompt(self):
-        choice = input("Voulez-vous commencer ce tournoi ? (O/N) ").casefold()
+        choice = input("\nVoulez-vous commencer ce tournoi ? (O/N) ").casefold()
         if choice == "o":
             return "ok"
         elif choice != "n":
@@ -78,7 +87,9 @@ class TournamentView:
     @staticmethod
     def tournament_resume():
         TournamentView().clear_screen()
-        print("Liste des tournois disponibles :\n")
+        print("o o o | REPRENDRE UN TOURNOI | o o o")
+        print("\nListe des tournois disponibles :")
+        print("(les tournois terminés ne sont pas affichés)\n")
         tournaments = json.load(open(tournaments_data_file))
         for tournament in tournaments:
             if tournament["status"] == "Ongoing":
@@ -91,7 +102,6 @@ class TournamentView:
                     f'Round {tournament["current_round"]} / {tournament["number_of_rounds"]}'
                 )
                 print(f'Description : {tournament["description"]}')
-                # print("- " * 50)
 
     def tournament_resume_input(self):
         return input(

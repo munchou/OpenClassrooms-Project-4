@@ -100,6 +100,7 @@ class Tournament:
         self.description = description
 
         self.matchlist = []
+        self.registered_players_ordered = []
 
         self.tournament_view = TournamentView()
         self.menu_view = MenuView()
@@ -162,17 +163,8 @@ class Tournament:
                 with open(file_name, "w") as json_file:
                     json.dump(obj, json_file, indent=4)
 
-    # def players_name_and_score(self):
-    #     """Make a new list specifically for matches making,
-    #     keeping only the names and score of the each player."""
-    #     registered_players = self.registered_players
-    #     match_players_list = []
-    #     for player in range(len(registered_players)):
-    #         player_info = [
-    #             f"{registered_players[player]['last_name']} {registered_players[player]['first_name']}, {registered_players[player]['score']}"
-    #         ]
-    #         match_players_list.append(player_info)
-    #     return match_players_list
+    def updated_matchlist(self, newmatchlist):
+        self.matchlist = newmatchlist
 
     def tournament_players(self):
         players = self.registered_players
@@ -195,6 +187,112 @@ class Tournament:
             self.pair_generator(player1, player2)
             playerslist = playerslist[2:]
 
+    def sort_by_score(self):
+        """Sort the players according to their score.
+        ("score" for ascending sorting, "-score" for descending)"""
+        self.registered_players = sorted(
+            self.registered_players, key=lambda score: -score["score"]
+        )
+
+        # return sorted(players, key=lambda score: -score["score"])
+
+    def compare_score(self, players, player1, player2):
+        while player1["score"] == player2["score"]:
+            random.shuffle(players)
+            player1 = players[0]
+            player2 = players[1]
+            for player in players:
+                print(f"PLAYERS : {player}")
+
+    def nextround_players(self):
+        """Make the pairs for rounds 2 to 4 depending on the
+        score. Two players cannot play against each other twice."""
+
+        playerslist = self.registered_players
+
+        obj = json.load(open(tournaments_data_file))
+
+        different_score = []
+        available_ids = []
+        teams = []
+        infiniteloop = 0
+
+        print(f"MATCH : {self.matchlist}")
+        for tournament in obj:
+
+            if tournament["tournament_id"] == self.tournament_id:
+                while len(playerslist) >= 2:
+                    infiniteloop += 1
+                    print(f"INFINITE LOOP : {infiniteloop}")
+
+                    if infiniteloop < 20:
+                        playerslist = sorted(
+                            playerslist, key=lambda score: -score["score"]
+                        )
+
+                    if infiniteloop >= 20:
+                        playerslist = self.registered_players
+                        infiniteloop = 0
+                        different_score = []
+                        available_ids = []
+                        teams = []
+                        random.shuffle(playerslist)
+
+                    player1 = playerslist[0]
+                    player2 = playerslist[1]
+                    player1_saved = player1
+
+                    playerslist.remove(player1)
+
+                    # Make list of unavailable IDs for P1
+                    for player in playerslist:
+                        if player["player_id"] not in player1_saved["played_against"]:
+                            available_ids.append(player)
+                            # playerslist.remove(player)
+
+                    # Make list of available players with different score
+                    if available_ids:
+                        for player in available_ids:
+                            if player["score"] != player1_saved["score"]:
+                                different_score.append(player)
+                                available_ids.remove(player)
+                    else:  # RESTART
+                        available_ids = []
+                        different_score = []
+                        teams = []
+                        playerslist = self.registered_players
+                        continue
+
+                    # If available IDs but NO different score
+                    if different_score:
+                        player2 = different_score[0]
+                    else:
+                        randnum = random.randrange(len(available_ids))
+                        player2 = available_ids[randnum]
+
+                    player1 = player1_saved
+                    teams.append(player1)
+                    teams.append(player2)
+                    playerslist.remove(player2)
+
+                    different_score = []
+                    available_ids = []
+
+                    print(f"**** TEAMS : {teams}")
+                    print(f"**** PLAYER 1 : {player1_saved}")
+                    print(f"*********LENGTH TEAMS : {len(teams)} ***********")
+                    print(f"****LENGTH playerslist : {len(playerslist)} ******")
+
+                print("\n\tFINISHED")
+
+                while teams:
+                    player1 = teams[0]
+                    print(f"    PLAYER 1 : {player1}")
+                    player2 = teams[1]
+                    print(f"    PLAYER 2 : {player2}")
+                    self.pair_generator(player1, player2)
+                    teams = teams[2:]
+
     def pair_generator(self, player1, player2):
         """Match as a tuple of 2 lists of the current players and their score."""
         match = (
@@ -203,59 +301,14 @@ class Tournament:
             f"{player2['last_name']} {player2['first_name']}",
             player2["score"],
         )
-        # self.rounds_list.append(match)
+        self.registered_players_ordered.append(player1)
+        self.registered_players_ordered.append(player2)
         self.played_against(player1, player2)
         self.matchlist.append(match)
 
-    def sort_by_score(self):
-        """Sort the players according to their score.
-        ("score" for ascending sorting, "-score" for descending)"""
-        self.registered_players = sorted(
-            self.registered_players, key=lambda score: -score["score"]
-        )
-        return self.registered_players
-
-    def next_round_same_score(self, p1, p2):
-        same_score = []
-        if p1["score"] == p2["score"]:
-            same_score.append
-
-    def nextround_players(self):
-        playerslist = self.registered_players
-        playerslist = sorted(playerslist, key=lambda score: -score["score"])
-
-        obj = json.load(open(tournaments_data_file))
-
-        players_removed = []
-
-        # self.next_round_same_score(self, player1, player2)
-
-        while len(playerslist) >= 2:
-            playerslist = sorted(playerslist, key=lambda score: -score["score"])
-
-            player1 = playerslist[0]
-            player2 = playerslist[1]
-
-            # Check
-            for removedplayer in players_removed:
-                print(f"Removed players : {removedplayer['first_name']}")
-
-            for tournament in obj:
-                if tournament["tournament_id"] == self.tournament_id:
-                    if player2["player_id"] in player1["played_against"]:
-                        players_removed.append(playerslist[1])
-                        del playerslist[1]
-
-                        continue
-                    else:
-                        self.pair_generator(player1, player2)
-                        playerslist = playerslist[2:]
-                        if players_removed:
-                            for player in players_removed:
-                                playerslist.append(player)
-                                players_removed = []
-
     def played_against(self, p1, p2):
+        """Add to each player's [played_against] list the ID of whom
+        they have played against."""
         obj = json.load(open(tournaments_data_file))
         for tournament in obj:
             roundplayers = self.registered_players
