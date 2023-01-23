@@ -95,6 +95,11 @@ class MenuController:
 
     def tournament_new(self):
         """Create a new tournament."""
+        check_players_avail = self.menu_view.not_enough_players()
+        while check_players_avail:
+            self.player.players_add()
+            continue
+
         tournament_id = 1
         tournament_info = []
 
@@ -139,6 +144,9 @@ class MenuController:
 
     def tournament_resume(self):
         """Resume a tournament."""
+        if path.isfile(tournaments_data_file) is False:
+            self.tournament_new()
+
         tournaments = self.tournament.load_tournament(self)
 
         self.tournament_view.tournament_resume()
@@ -179,6 +187,9 @@ class MenuController:
     def player_update(self):
         """Show the list of IDs in the alphabetical order.
         Choose the ID of the player to be changed"""
+        if path.isfile(tournaments_data_file) is False:
+            self.player_add()
+
         while True:
             self.menu_view.clear_screen()
             obj = json.load(open(players_data_file))

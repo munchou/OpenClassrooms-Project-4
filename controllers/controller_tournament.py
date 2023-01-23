@@ -121,9 +121,15 @@ class TournamentController:
                     tourn.current_round,
                 )
 
-                while True:
+                if tourn.current_round < 5:
+                    gotonextround = True
+                else:
+                    gotonextround = False
+
+                while gotonextround:
                     next_round = self.tournament_view.end_round_next_round_prompt()
                     if next_round == "ok":
+                        gotonextround = False
                         self.go_to_next_round(tourn)
                     elif next_round == "bye":
                         break
@@ -219,8 +225,6 @@ class TournamentController:
                     tourn.current_round,
                 )
 
-                print(f"CURRENT ROUND : {tourn.current_round}")
-
                 if tourn.current_round < 5:
                     gotonextround = True
                 else:
@@ -246,6 +250,8 @@ class TournamentController:
                         "status",
                         tourn.status,
                     )
+
+                    self.tournament_end(tourn)
 
                 break
             elif choice == "bye":
@@ -344,4 +350,12 @@ class TournamentController:
 
     def tournament_end(self, tourn):
         """Get the date and time when the tournament ends."""
+        selected_tournament = tourn.tournament_id
         tourn.date_end = self.timer_fr
+        self.tournament.tournament_update(
+            tournaments_data_file,
+            "tournament_id",
+            selected_tournament,
+            "date_end",
+            tourn.date_end,
+        )

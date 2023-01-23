@@ -200,8 +200,6 @@ class Tournament:
 
         obj = json.load(open(tournaments_data_file))
 
-        print(f"\n\tLOADING {obj}")
-
         different_score = []
         available_ids = []
         teams = []

@@ -126,7 +126,9 @@ class TournamentView:
             return "bye"
 
     def end_round_next_round_prompt(self):
-        next_round = input("Voulez-vous commencer le round suivant ? (O/N) ").casefold()
+        next_round = input(
+            "\nVoulez-vous commencer le round suivant ? (O/N) "
+        ).casefold()
         if next_round == "o":
             return "ok"
         elif next_round != "n":
