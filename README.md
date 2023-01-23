@@ -39,7 +39,7 @@ Flake8 va scanner le fichier "main" ainsi que les fichiers se trouvant dans les 
 
 ### Utilisation du programme
 Au lancement du programme sera affiché le menu principal :
-[img](explanation_imgs/01_mainmenu.png)
+![img](explanation_imgs/01_mainmenu.png)
 
 Création d'un tournoi où il faut saisir le nom, le lieu et éventuellement une description :
 (note : les saisies ne sont pas contraignantes donc n'importe quoi peut être entré)
