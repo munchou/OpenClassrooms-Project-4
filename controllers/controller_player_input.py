@@ -189,7 +189,6 @@ class PlayerInput:
                     gender_input,
                     rank_input,
                 )
-                # Player.player_serialization(self)
 
                 player.save_player()
 

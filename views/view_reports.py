@@ -31,6 +31,7 @@ class ReportsView:
         self.round_players = ["Joueur 1", "Score J1", "Joueur 2", "Score J2"]
 
     def clear_screen(self):
+        """Clear the display."""
         os.system("cls" if sys.platform == "win32" else "clear")
 
     def players_alpha(self, players):
@@ -154,22 +155,20 @@ class ReportsView:
 
         self.clear_screen()
         print(
-            f'o o o | JOUEURS DU TOURNOI {tournament["tournament_id"]} (ordre alphabétique) | o o o\n'
+            f'\to o o | JOUEURS DU TOURNOI {tournament["tournament_id"]} (ordre alphabétique) | o o o\n'
         )
         print(self.table)
 
-    def tournament_rounds_matches(self, all_rounds):
+    def tournament_rounds_matches(self, tournament_title, all_rounds):
         """Show the tables of all the rounds and matches
         from a selected tournament"""
         self.table.clear()
 
+        print(f"\n\to o o | {tournament_title.upper()} | o o o")
+
         for round in all_rounds:
             matches = round[3]
             self.table.clear()
-            # round[0] = name
-            # round[1] = Start date
-            # round[2] = End date
-            # round[3] = 4 matches
 
             tableheader = PrettyTable(
                 [f"{round[0]}", f"DÉMARRÉ LE {round[1]}", f"TERMINÉ LE {round[2]}"]
@@ -181,14 +180,7 @@ class ReportsView:
 
             print(f"\n{tableheader}")
 
-            # ROUND table
-
             for match in matches:
-
-                # match[0] = P1
-                # match[1] = P1 score
-                # match[2] = P2
-                # match[3] = P2 score
 
                 self.table.field_names = self.round_players
                 self.table._min_width = {

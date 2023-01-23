@@ -19,7 +19,7 @@ class RoundView:
 
     def matches_summary(self, tourn, round, matches):
         """Show the tables of the tournament and the current round."""
-        # TOURNAMENT table
+
         tableheader = PrettyTable(["NOM DU TOURNOI", tourn.name])
 
         tableheader._min_width = {"NOM DU TOURNOI": 16, tourn.name: 80}
@@ -40,7 +40,6 @@ class RoundView:
 
         print(tableheader)
 
-        # ROUND table
         self.table.clear()
         self.table.field_names = self.round_players
         self.table._min_width = {

@@ -12,8 +12,6 @@ from views.view_main import MenuView
 from views.view_tournament import TournamentView
 
 
-# MAX_PLAYERS = 8
-
 players_data_file = "data/players.json"
 tournaments_data_file = "data/tournaments.json"
 
@@ -97,7 +95,6 @@ class MenuController:
 
     def tournament_new(self):
         """Create a new tournament."""
-        # self.menu_view.tournament_new()
         tournament_id = 1
         tournament_info = []
 
@@ -141,6 +138,7 @@ class MenuController:
         self.tournamentcontroller.tournament_start(tournament)
 
     def tournament_resume(self):
+        """Resume a tournament."""
         tournaments = self.tournament.load_tournament(self)
 
         self.tournament_view.tournament_resume()
@@ -165,19 +163,6 @@ class MenuController:
                 tourn = tourn_choice - 1
                 tournament = tournaments[tourn]
                 tournament = Tournament(**tournament)
-                # tournament = Tournament(
-                #     tournament["tournament_id"],
-                #     tournament["name"],
-                #     tournament["location"],
-                #     tournament["date_start"],
-                #     tournament["date_end"],
-                #     tournament["number_of_rounds"],
-                #     tournament["current_round"],
-                #     tournament["status"],
-                #     tournament["rounds_list"],
-                #     tournament["registered_players"],
-                #     tournament["description"],
-                # )
                 self.tournamentcontroller.tournament_start(tournament)
                 break
 
@@ -187,6 +172,7 @@ class MenuController:
                 self.tournament_resume()
 
     def player_add(self):
+        """Calls the function to create a new player."""
         self.menu_view.new_player_header()
         self.player.players_add()
 
@@ -197,10 +183,7 @@ class MenuController:
             self.menu_view.clear_screen()
             obj = json.load(open(players_data_file))
 
-            # Show the available IDs that can be updated - To remove later ?
-
-            print("\no o o | MODIFIER UN JOUEUR | o o o\n")
-            print("ID disponibles (par ordre alphabétique) : ")
+            self.menu_view.player_update_header()
             id_list = []
             for player in obj:
                 a = f"\t{player['player_id']} - {player['first_name']} {player['last_name']}"
@@ -214,17 +197,21 @@ class MenuController:
                 wrong_id = False
                 if player["player_id"] == id_to_update:
                     last_name = None
-                    # first_name = None
-                    # birth_date = None
-                    # gender = None
-                    # rank = None
-                    player["last_name"] = self.menu_view.input_player_lastname(
+                    first_name = None
+                    birth_date = None
+                    gender = None
+                    rank = None
+                    player["last_name"] = self.menu_view.player_last_name_update(
                         last_name
                     )
-                    player["first_name"] = PlayerInput.player_first_name(self)
-                    player["birth_date"] = PlayerInput.player_birth_date(self)
-                    player["gender"] = PlayerInput.player_gender(self)
-                    player["rank"] = PlayerInput.player_rank(self)
+                    player["first_name"] = self.menu_view.player_first_name_update(
+                        first_name
+                    )
+                    player["birth_date"] = self.menu_view.player_birth_date_update(
+                        birth_date
+                    )
+                    player["gender"] = self.menu_view.player_gender_update(gender)
+                    player["rank"] = self.menu_view.player_rank_update(rank)
 
                     with open(players_data_file, "w") as json_file:
                         json.dump(
@@ -242,14 +229,14 @@ class MenuController:
                 wrong_id = False
 
             while True:
-                remove_more = self.menu_view.input_player_updateanother()
-                if (remove_more == "o") or (remove_more == "n"):
+                update_more = self.menu_view.input_player_updateanother()
+                if (update_more == "o") or (update_more == "n"):
                     break
                 else:
                     self.menu_view.wrong_input()
                     continue
 
-            if remove_more == "n":
+            if update_more == "n":
                 self.main_menu()
 
     def player_remove(self):
@@ -259,9 +246,7 @@ class MenuController:
             self.menu_view.clear_screen()
             obj = json.load(open(players_data_file))
 
-            # Show the available IDs that can be removed - To remove later?
-            print("\no o o | MODIFIER UN JOUEUR | o o o\n")
-            print("ID disponibles (par ordre alphabétique) : ")
+            self.menu_view.player_remove_header()
             id_list = []
             for player in obj:
                 a = f"\t{player['player_id']} - {player['first_name']} {player['last_name']}"
@@ -302,6 +287,7 @@ class MenuController:
                 break
 
     def reports_menu(self):
+        """Menu to show reports."""
         self.menu_view.reports_menu()
 
         self.menu_view.first_prompt()
@@ -388,11 +374,13 @@ class MenuController:
 
         for players in player_final_list:
             print(
-                f'{players["last_name"]} {players["first_name"]} | {players["gender"]} | {players["birth_date"]} | {players["rank"]}'
+                f'{players["last_name"]} {players["first_name"]} | {players["gender"]} | \
+{players["birth_date"]} | {players["rank"]}'
             )
         return player_final_list
 
     def exit_program(self):
+        """Exit the program."""
         while True:
             choice = self.menu_view.input_exit_program()
             if choice == "ok":

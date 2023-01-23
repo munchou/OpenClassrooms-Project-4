@@ -55,19 +55,10 @@ class ReportsController:
 
             while True:
                 tourn_choice = self.menu_view.tournament_select()
-                try:
-                    tourn_choice = int(tourn_choice)
-                    if tourn_choice in available_ids:
-                        break
-                    else:
-                        continue
-                except ValueError:
-                    self.tournament_players()
-
-            for tourn in tournaments:
                 if tourn_choice in available_ids:
                     tourn = tourn_choice - 1
                     tournament = tournaments[tourn]
+                    break
 
             return tournament
 
@@ -82,22 +73,26 @@ class ReportsController:
             players = sorted(players, key=lambda lastname: lastname["last_name"])
 
             self.reports_view.tournament_players(tournament, players)
+
         else:
             self.menu_view.tournaments_file_error()
 
     def tournament_rounds_matches(self):
         """Reports - Show all the rounds and matches of a selected tournament."""
-        # liste de tous les tours du tournoi et de tous les matchs du tour
         if path.isfile(tournaments_data_file) is True:
             tournament = self.select_tournament()
             all_rounds = tournament["rounds_list"]
-            # all the existing rounds of a tournament
+            tournament_title = (
+                f'Tournoi {tournament["tournament_id"]} : {tournament["name"]}'
+            )
 
             print(len(all_rounds))
-            if "Round 1" not in all_rounds[0]:
+            if len(all_rounds) == 0 or "Round 1" not in all_rounds[0]:
                 self.menu_view.tournament_not_started()
                 self.tournament_rounds_matches()
             else:
-                self.reports_view.tournament_rounds_matches(all_rounds)
+                self.reports_view.tournament_rounds_matches(
+                    tournament_title, all_rounds
+                )
         else:
             self.menu_view.tournaments_file_error()

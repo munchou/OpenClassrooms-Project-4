@@ -23,14 +23,13 @@ class TournamentController:
         self.timer_fr = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 
     def clear_screen(self):
+        """Clears the display to make it neat."""
         os.system("cls" if sys.platform == "win32" else "clear")
 
     def tournament_start(self, tourn):
         """Start a new tournament ("tourn") or resume an existing one."""
         self.clear_screen()
         selected_tournament = tourn.tournament_id
-
-        # in case of new tournament (from round 1):
 
         if tourn.current_round == 1:
             tourn.date_start = self.timer_fr
@@ -45,8 +44,6 @@ class TournamentController:
 
             self.round_one_start(tourn)
 
-            # tourn.current_round += 1
-
             self.tournament.tournament_update(
                 tournaments_data_file,
                 "tournament_id",
@@ -57,16 +54,6 @@ class TournamentController:
 
         elif tourn.current_round > 1:
             self.round_next(tourn)
-
-            # tourn.current_round += 1
-
-            self.tournament.tournament_update(
-                tournaments_data_file,
-                "tournament_id",
-                selected_tournament,
-                "current_round",
-                tourn.current_round,
-            )
 
         elif tourn.status == "Finished":
             self.tournament_end(tourn)
@@ -79,7 +66,7 @@ class TournamentController:
         round_one = Round("Round 1", self.timer_fr, "Pending")
 
         if not tourn.rounds_list:
-            tourn.roundone_players()  # Makes the teams for the first round
+            tourn.roundone_players()
 
             round_one.retrieve_matches(tourn.matchlist)
 
@@ -126,6 +113,23 @@ class TournamentController:
                 )
                 tourn.current_round += 1
 
+                self.tournament.tournament_update(
+                    tournaments_data_file,
+                    "tournament_id",
+                    selected_tournament,
+                    "current_round",
+                    tourn.current_round,
+                )
+
+                while True:
+                    next_round = self.tournament_view.end_round_next_round_prompt()
+                    if next_round == "ok":
+                        self.go_to_next_round(tourn)
+                    elif next_round == "bye":
+                        break
+                    else:
+                        continue
+
                 break
             elif choice == "bye":
                 break
@@ -141,7 +145,7 @@ class TournamentController:
         if f"Round {str(tourn.current_round)}" not in str(tourn.rounds_list):
             players_backup = tourn.registered_players
 
-            tourn.nextround_players()  # Makes the teams for the round
+            tourn.nextround_players()
 
             round.retrieve_matches(tourn.matchlist)
 
@@ -193,6 +197,8 @@ class TournamentController:
 
                 self.score_points_input(round.matches, tourn)
 
+                round.retrieve_matches(tourn.matchlist)
+
                 del tourn.rounds_list[-1]
                 tourn.rounds_list.append(round.round())
                 self.tournament.tournament_update(
@@ -202,9 +208,36 @@ class TournamentController:
                     "rounds_list",
                     tourn.rounds_list,
                 )
+
                 tourn.current_round += 1
 
+                self.tournament.tournament_update(
+                    tournaments_data_file,
+                    "tournament_id",
+                    selected_tournament,
+                    "current_round",
+                    tourn.current_round,
+                )
+
+                print(f"CURRENT ROUND : {tourn.current_round}")
+
+                if tourn.current_round < 5:
+                    gotonextround = True
+                else:
+                    gotonextround = False
+
+                while gotonextround:
+                    next_round = self.tournament_view.end_round_next_round_prompt()
+                    if next_round == "ok":
+                        gotonextround = False
+                        self.go_to_next_round(tourn)
+                    elif next_round == "bye":
+                        break
+                    else:
+                        continue
+
                 if tourn.current_round == 5:
+
                     tourn.status = "Finished"
                     self.tournament.tournament_update(
                         tournaments_data_file,
@@ -220,11 +253,22 @@ class TournamentController:
             else:
                 continue
 
+    def go_to_next_round(self, current_tournament):
+        """Continue to next round."""
+        tournaments = self.tournament.load_tournament(self)
+
+        for tourn in tournaments:
+            tourn = current_tournament.tournament_id - 1
+            tournament = tournaments[tourn]
+            tournament = Tournament(**tournament)
+
+        self.tournament_start(tournament)
+
     def score_points_input(self, matches, tourn):
+        """Score input after a round."""
         selected_tournament = tourn.tournament_id
 
         players_scores_list = []
-        # print(f"ROUNDS (debug - to delete later): {matches}")
 
         i = 0
         for match in matches:
@@ -235,9 +279,9 @@ class TournamentController:
             i += 1
 
             while True:
-                print("")
-                print(f"[MATCH {i}]")
-                print(f"[{p1}, score : {p1_score} [VS] {p2}, score : {p2_score}]")
+                self.tournament_view.end_round_scores_match(
+                    i, p1, p2, p1_score, p2_score
+                )
                 choice = self.tournament_view.end_round_scores_input()
                 if choice in ["1", "2", "3"]:
                     if choice == "1":
@@ -261,8 +305,6 @@ class TournamentController:
         for i in range(len(tourn.registered_players)):
             tourn.registered_players[i]["score"] += players_scores_list[i]
 
-        # UPDATE the tournament's "rounds_list" as well
-
         new_matches = []
         new_matchesbis = []
         for match in matches:
@@ -280,8 +322,6 @@ class TournamentController:
 
         tourn.updated_matchlist(new_matchesbis)
 
-        # tourn.matchlist = new_matchesbis
-
         selected_tournament = tourn.tournament_id
 
         self.tournament.tournament_update(
@@ -293,6 +333,7 @@ class TournamentController:
         )
 
     def registered_players_update(self, selected_tournament, players):
+        """Function that saves to the JSON file the updated player."""
         self.tournament.tournament_update(
             tournaments_data_file,
             "tournament_id",
@@ -302,4 +343,5 @@ class TournamentController:
         )
 
     def tournament_end(self, tourn):
+        """Get the date and time when the tournament ends."""
         tourn.date_end = self.timer_fr
