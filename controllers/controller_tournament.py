@@ -351,7 +351,7 @@ class TournamentController:
     def tournament_end(self, tourn):
         """Get the date and time when the tournament ends."""
         selected_tournament = tourn.tournament_id
-        tourn.date_end = self.timer_fr
+        tourn.date_end = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
         self.tournament.tournament_update(
             tournaments_data_file,
             "tournament_id",
