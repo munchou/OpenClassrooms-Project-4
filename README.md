@@ -4,6 +4,9 @@
 
 _Testé sous Windows 10 et Python 3.10.2_
 
+# Preview
+![img](P4_chesstournament.gif)
+
 # Objectifs
 Programme de gestion de tournois d'échecs HORS LIGNE, permettant de :
 - Créer un tournoi et y ajouter 8 participants
